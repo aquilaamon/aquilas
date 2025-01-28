@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Services - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+        }
+        header {
+            background: linear-gradient(to right, #4caf50, #2196f3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            color: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background: #575757;
+            border-radius: 5px;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .hamburger div {
+            background: white;
+            height: 3px;
+            width: 25px;
+            margin: 4px 0;
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: row;
+        }
+        .nav-links.mobile {
+            display: none;
+            flex-direction: column;
+            background: #333;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+        }
+        .nav-links.mobile a {
+            padding: 15px;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+        }
+        footer {
+            background: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            color: white;
+        }
+        .footer-card {
+            background: #444;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .footer-card h3 {
+            color: #4caf50;
+        }
+
+        footer a {
+            color: #4caf50;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #c3d0d8;
+            cursor: pointer;
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .service-list {
+            display: none;
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .service-list.active {
+            display: block;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+        }
+        legend {
+            font-weight: bold;
+            color: #2196f3;
+            padding: 0 10px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: #2196f3;
+        }
+        .done-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .done-btn:hover {
+            background: #45a049;
+        }
+        #payment ul {
+            list-style: none;
+            padding: 0;
+        }
+        #payment li {
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+            }
+            .nav-links.mobile {
+                display: flex;
+            }
+        }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const cards = document.querySelectorAll('.card');
+        const serviceLists = document.querySelectorAll('.service-list fieldset');
+        const doneBtn = document.querySelector('.done-btn');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile');
+        });
+
+        cards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const loggedIn = true; // Simulate login status
+
+                if (loggedIn) {
+                    serviceLists.forEach((list, listIndex) => {
+                        list.style.display = listIndex === index ? 'block' : 'none';
+                    });
+                    document.querySelector('.service-list').classList.add('active');
+                    document.querySelector('.service-list').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert('Please log in or register to view and request services.');
+                }
+            });
+        });
+
+        doneBtn.addEventListener('click', () => {
+            document.querySelector('.service-list').classList.remove('active');
+        });
+    });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Aquila's Data Science Services</h1>
+        <p>Your one-stop solution for data science, analysis, and machine learning needs!</p>
+    </header>
+
+    <nav>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#payment">Payments</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>We are a team of data scientists passionate about providing insights and solutions using data science, machine learning, and neural networks. With years of experience, we deliver excellence in every project.</p>
+    </section>
+
+    <section id="services">
+        <h2>Our Services</h2>
+        <p>Click on a service card to view details and make requests.</p>
+        <div class="cards-container">
+            <div class="card">
+                <h3>Data Analysis</h3>
+                <p>Transform raw data into meaningful insights using advanced analytical techniques.</p>
+            </div>
+            <div class="card">
+                <h3>Machine Learning</h3>
+                <p>Build predictive models to automate decision-making processes.</p>
+            </div>
+            <div class="card">
+                <h3>Neural Networks</h3>
+                <p>Develop deep learning models for tasks like image recognition and natural language processing.</p>
+            </div>
+            <div class="card">
+                <h3>Web Development</h3>
+                <p>Create modern, responsive websites with backend and frontend integration.</p>
+            </div>
+        </div>
+
+        <div class="service-list">
+            <fieldset>
+                <legend>Data Analysis</legend>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox"> Exploratory Data Analysis (EDA)</label>
+                    <label class="checkbox-item"><input type="checkbox"> Statistical Analysis</label>
+                    <label class="checkbox-item"><input type="checkbox"> Data Visualization</label>
+                    <label class="checkbox-item"><input type="checkbox"> Predictive Analytics</label>
+                    <label class="checkbox-item"><input type="checkbox"> Data Cleaning and Preprocessing</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Machine Learning</legend>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox"> Supervised Learning</label>
+                    <label class="checkbox-item"><input type="checkbox"> Unsupervised Learning</label>
+                    <label class="checkbox-item"><input type="checkbox"> Reinforcement Learning</label>
+                    <label class="checkbox-item"><input type="checkbox"> Model Optimization and Tuning</label>
+                    <label class="checkbox-item"><input type="checkbox"> Model Deployment</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Neural Networks</legend>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox"> Deep Learning Models</label>
+                    <label class="checkbox-item"><input type="checkbox"> Convolutional Neural Networks (CNNs)</label>
+                    <label class="checkbox-item"><input type="checkbox"> Recurrent Neural Networks (RNNs) & LSTMs</label>
+                    <label class="checkbox-item"><input type="checkbox"> Autoencoders</label>
+                    <label class="checkbox-item"><input type="checkbox"> Neural Network Optimization</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Web Development</legend>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox"> Frontend Development</label>
+                    <label class="checkbox-item"><input type="checkbox"> Backend Development</label>
+                    <label class="checkbox-item"><input type="checkbox"> API Development & Integration</label>
+                    <label class="checkbox-item"><input type="checkbox"> Database Design and Management</label>
+                    <label class="checkbox-item"><input type="checkbox"> Website Optimization</label>
+                </div>
+            </fieldset>
+
+            <button class="done-btn">Done</button>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <h2>Portfolio</h2>
+        <p>Explore some of our recent projects:</p>
+        <ul>
+            <li>Predictive Sales Model for Retail Chains</li>
+            <li>Customer Sentiment Analysis Tool</li>
+            <li>AI-based Recommendation System</li>
+        </ul>
+    </section>
+
+    <section id="payment">
+        <h2>Payment Directory</h2>
+        <p>Make secure payments for our services using the options below:</p>
+        <ul>
+            <li>PayPal</li>
+            <li>Credit/Debit Cards</li>
+            <li>Bank Transfers</li>
+            <li>MPesa Global</li>
+        </ul>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-card">
+                <h3>Our Mission</h3>
+                <p>Deliver high-quality, tailored solutions that ensure client success through cutting-edge data analysis and machine learning solutions.</p>
+            </div>
+            <div class="footer-card">
+                <h3>Contact Us</h3>
+                <p>Email: info@aquilaservices.com</p>
+                <p>Phone: +123 456 7890</p>
+                <a href="#">Contact Support</a>
+            </div>
+            <div class="footer-card">
+                <h3>Terms & Services</h3>
+                <p>Learn more about our policies and commitments to transparency and customer satisfaction.</p>
+                <a href="#">Read our Terms and Services</a>
+            </div>
+        </div>
+        <p>&copy; 2025 Aquila's Data Science Services. All rights reserved.</p>
+    </footer>
+</body>
+</html>
