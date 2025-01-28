@@ -10,6 +10,9 @@
             margin: 0;
             padding: 0;
             background: #f4f4f9;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         header {
             background: linear-gradient(to right, #4caf50, #2196f3);
@@ -73,6 +76,7 @@
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
         }
 
         .footer-container {
@@ -84,11 +88,15 @@
         .footer-card {
             background: #444;
             padding: 20px;
-            border-radius: 8px;
+            margin-top: 40px;
+            border-radius: 10px;
+            text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+            
         .footer-card h3 {
             color: #4caf50;
+            margin-bottom: 15px;
         }
 
         footer a {
@@ -160,6 +168,33 @@
         .done-btn:hover {
             background: #45a049;
         }
+
+        .payment-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .payment-container h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .paypal-button-container {
+            margin-top: 20px;
+        }
+        .amount-input {
+            margin-bottom: 20px;
+        }
+        .amount-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
         #payment ul {
             list-style: none;
             padding: 0;
@@ -170,6 +205,18 @@
             padding: 15px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .request-form {
+            display: none;
+            margin-top: 20px;
+        }
+        .request-form select, .request-form input, .request-form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         @media (max-width: 768px) {
             .hamburger {
@@ -326,10 +373,17 @@
 
     <section id="payment">
         <h2>Payment Directory</h2>
-        <p>Make secure payments for our services using the options below:</p>
-        <ul>
-            <li>PayPal</li>
-            <li>Credit/Debit Cards</li>
+        <div class="payment-container">
+            <h1>Pay with PayPal</h1>
+            <p>Complete your payment quickly and securely using PayPal.</p>
+            <div class="amount-input">
+                <label for="amount">Enter Amount (USD):</label>
+                <input type="number" id="amount" placeholder="Enter amount" min="1" step="0.01" required>
+            </div>
+            <div class="paypal-button-container"></div>
+        </div>
+        
+        
             <li>Bank Transfers</li>
             <li>MPesa Global</li>
         </ul>
@@ -343,9 +397,24 @@
             </div>
             <div class="footer-card">
                 <h3>Contact Us</h3>
-                <p>Email: info@aquilaservices.com</p>
-                <p>Phone: +123 456 7890</p>
-                <a href="#">Contact Support</a>
+                <p>Email: aquilawilfred@gmail.com</p>
+                <p>Phone: +2541 125 54165</p>
+                <a href="#" id="contact-us-link">Contact Support</a>
+            
+                <div class="request-form" id="request-form">
+                    <h4>Send Us a Message</h4>
+                    <select id="message-type" required>
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="request">Request</option>
+                        <option value="issue">Issue</option>
+                        <option value="comment">Comment</option>
+                    </select>
+                    <input type="text" id="sender-name" placeholder="Your Name" required>
+                    <input type="text" id="phone-number" placeholder="Your Phone Number" required>
+                    <input type="text" id="subject" placeholder="Subject" required>
+                    <textarea id="message" placeholder="Write your message..." rows="4" required></textarea>
+                    <button id="send-request">Send</button>
+                </div>
             </div>
             <div class="footer-card">
                 <h3>Terms & Services</h3>
@@ -355,5 +424,88 @@
         </div>
         <p>&copy; 2025 Aquila's Data Science Services. All rights reserved.</p>
     </footer>
+
+    <script>
+        if (typeof paypal !== 'undefined') {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    const amount = document.getElementById('amount').value;
+                    if (!amount || parseFloat(amount) <= 0) {
+                        alert('Please enter a valid amount.');
+                        throw new Error('Invalid amount entered.');
+                    }
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: amount // Set the amount to charge based on user input
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert('Transaction completed by ' + details.payer.name.given_name);
+                        // Add logic to handle successful payment here
+                    });
+                },
+                onError: function(err) {
+                    console.error('An error occurred during the transaction:', err);
+                    alert('An error occurred during the payment process. Please try again.');
+                }
+            }).render('.paypal-button-container');
+        } else {
+            console.error('PayPal SDK failed to load. Please check your integration.');
+            alert('PayPal is not available at the moment.');
+        }
+
+        document.getElementById('contact-us-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        const form = document.getElementById('request-form');
+        form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+    });
+
+    document.getElementById('send-request').addEventListener('click', function() {
+        const type = document.getElementById('message-type').value;
+        const name = document.getElementById('sender-name').value;
+        const phone = document.getElementById('phone-number').value;
+        const subject = document.getElementById('subject').value;
+        const userMessage = document.getElementById('message').value;
+        const timestamp = new Date().toLocaleString();
+
+        if (!type || !name || !phone || !subject || !userMessage) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        let generatedMessage;
+
+        switch (type) {
+            case 'request':
+                generatedMessage = `Dear ${name},\n\nThank you for your request. We are reviewing it and will get back to you as soon as possible.\n\nDetails:\n${userMessage}`;
+                break;
+            case 'issue':
+                generatedMessage = `Dear ${name},\n\nWe acknowledge your issue and are working on it promptly.\n\nDetails:\n${userMessage}`;
+                break;
+            case 'comment':
+                generatedMessage = `Dear ${name},\n\nThank you for your feedback. We appreciate your input.\n\nDetails:\n${userMessage}`;
+                break;
+            default:
+                generatedMessage = userMessage;
+        }
+
+        console.log(`Message Sent:\nName: ${name}\nPhone: ${phone}\nSubject: ${subject}\nMessage Type: ${type}\nGenerated Message: ${generatedMessage}\nTimestamp: ${timestamp}`);
+        alert('Your message has been sent successfully.');
+
+        // Clear the form
+        document.getElementById('message-type').value = '';
+        document.getElementById('sender-name').value = '';
+        document.getElementById('phone-number').value = '';
+        document.getElementById('subject').value = '';
+        document.getElementById('message').value = '';
+
+        // Hide the form
+        document.getElementById('request-form').style.display = 'none';
+    });
+    </script>
 </body>
 </html>
